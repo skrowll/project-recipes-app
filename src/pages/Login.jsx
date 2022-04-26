@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const PASSWORD_MAX_LENGTH = 6;
 
 export default function Login() {
+  const history = useHistory();
+
   const [state, setState] = useState({
     email: '',
     password: '',
   });
 
   const [buttonDisabled, setButtonDisabled] = useState(true);
+
+  const saveToken = () => {
+    localStorage.setItem('mealsToken', 1);
+    localStorage.setItem('cocktailsToken', 1);
+    localStorage.setItem('user', JSON.stringify({ email: state.email }));
+    history.push('/foods');
+  };
 
   const handleInputChange = ({ target: { name, value } }) => {
     setState((prev) => ({
@@ -24,7 +34,7 @@ export default function Login() {
   }, [state]);
 
   return (
-    <form>
+    <form onSubmit={ saveToken }>
       <input
         data-testid="email-input"
         type="email"
@@ -45,9 +55,9 @@ export default function Login() {
         disabled={ buttonDisabled }
         data-testid="login-submit-btn"
         type="submit"
+        onClick={ saveToken }
       >
         Entrar
-
       </button>
     </form>
   );
