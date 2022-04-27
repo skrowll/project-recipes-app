@@ -10,14 +10,14 @@ import mealIcon from '../images/mealIcon.svg';
 export default function Footer() {
   return (
     <footer data-testid="footer">
-      <Link data-testid="drinks-bottom-btn" to="/drinks">
-        <img src={ drinkIcon } alt="button drinks" />
+      <Link to="/drinks">
+        <img data-testid="drinks-bottom-btn" src={ drinkIcon } alt="button drinks" />
       </Link>
-      <Link data-testid="explore-bottom-btn" to="/">
-        <img src={ exploreIcon } alt="button explore" />
+      <Link to="/">
+        <img data-testid="explore-bottom-btn" src={ exploreIcon } alt="button explore" />
       </Link>
-      <Link data-testid="food-bottom-btn" to="/foods">
-        <img src={ mealIcon } alt="button food" />
+      <Link to="/foods">
+        <img data-testid="food-bottom-btn" src={ mealIcon } alt="button food" />
       </Link>
     </footer>
   );
