@@ -1,10 +1,7 @@
 const request = async (endPoint) => {
-  if (endPoint) {
-    const response = await fetch(endPoint);
-    const data = await response.json();
-    console.log(data);
-    return data;
-  }
+  const response = await fetch(endPoint);
+  const data = await response.json();
+  return data;
 };
 
 export default request;
