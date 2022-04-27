@@ -5,7 +5,7 @@ import request from '../services/services';
 export default function SearchBar() {
   const [state, setState] = useState({
     inputSearch: '',
-    search: '',
+    search: 'name',
   });
 
   const { searchEndpoints:
@@ -14,6 +14,7 @@ export default function SearchBar() {
       nameEndpoint,
       firstLetterEndpoint,
     },
+  search,
   } = useContext(AppContext);
 
   const onChange = ({ target: { name, value } }) => {
@@ -45,6 +46,7 @@ export default function SearchBar() {
       return `${firstLetterEndpoint}${state.inputSearch[0]}`;
     }
   };
+
   return (
     <form>
       <input
@@ -70,6 +72,7 @@ export default function SearchBar() {
           type="radio"
           data-testid="name-search-radio"
           id="name"
+          checked
           name="search"
           value="name"
           onChange={ onChange }
@@ -91,8 +94,8 @@ export default function SearchBar() {
         type="button"
         data-testid="exec-search-btn"
         onClick={ async () => {
-          console.log(getEndpoint());
-          console.log(await request(getEndpoint()));
+          const data = await request(getEndpoint());
+          search(data);
         } }
       >
         buscar
