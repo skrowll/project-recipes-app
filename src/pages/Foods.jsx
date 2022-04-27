@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import Header from '../components/Header';
-import AppContext from '../context/AppContext';
-import RecipeCard from '../components/RecipeCard';
 import { FOOD_ENDPOINTS } from '../context/AppContextProvider';
+import AppContext from '../context/AppContext';
+import Header from '../components/Header';
+import RecipeCard from '../components/RecipeCard';
+import Footer from '../components/Footer';
 
 const MAX_ITEMS = 12;
 
@@ -17,6 +18,10 @@ export default function Foods() {
   }, [setSearchEndpoints]);
 
   console.log(searchResult.meals);
+
+  if (searchResult.meals === null) {
+    global.alert('Sorry, we haven\'t found any recipes for these filters.');
+  }
 
   if (searchResult.meals && searchResult.meals.length === 1) {
     history.push(`/foods/${searchResult.meals[0].idMeal}`);
@@ -35,6 +40,7 @@ export default function Foods() {
           />
         ),
       )}
+      <Footer />
     </div>
   );
 }
