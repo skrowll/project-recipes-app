@@ -9,6 +9,8 @@ import Footer from '../components/Footer';
 
 const MAX_ITEMS = 12;
 
+// salve
+
 export default function Foods() {
   const history = useHistory();
   const { setSearchEndpoints, searchResult } = useContext(AppContext);
