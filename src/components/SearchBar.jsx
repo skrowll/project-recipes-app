@@ -1,31 +1,48 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import AppContext from '../context/AppContext';
 import request from '../services/services';
 
 export default function SearchBar() {
-  const [endPoint, setEndPonit] = useState('');
+  const [state, setState] = useState({
+    inputSearch: '',
+    search: '',
+  });
 
-  const onChange = ({ target: { value } }) => {
-    console.log(value);
-    setEndPonit((prevState) => ({
+  const { searchEndpoints:
+    {
+      ingredientEndpoint,
+      nameEndpoint,
+      firstLetterEndpoint,
+    },
+  } = useContext(AppContext);
+
+  const onChange = ({ target: { name, value } }) => {
+    if (name === 'inputSearch' && value.length > 1 && state.search === 'first-letter') {
+      global.alert('Your search must have only 1 (one) character');
+      return;
+    }
+
+    setState((prevState) => ({
       ...prevState,
-      value,
+      [name]: value,
     }));
   };
 
-  const searchClick = () => {
-    const element = document.querySelector('input[name=search]:checked').value;
-
-    if (element === 'ingredient') {
-      return `https://www.themealdb.com/api/json/v1/1/filter.php?i=${endPoint.value}`;
+  const getEndpoint = () => {
+    if (state.search === 'ingredient') {
+      return `${ingredientEndpoint}${state.inputSearch}`;
     }
-    if (element === 'name') {
-      return `https://www.themealdb.com/api/json/v1/1/search.php?s=${endPoint.value}`;
+    if (state.search === 'name') {
+      return `${nameEndpoint}${state.inputSearch}`;
     }
-    if (element === 'first-letter' && endPoint.value.length === 1) {
-      return `https://www.themealdb.com/api/json/v1/1/search.php?f=${endPoint.value}`;
-    }
-    if (element === 'first-letter' && endPoint.value.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
+    if (state.search === 'first-letter') {
+      if (state.inputSearch.length > 1) {
+        setState((prevState) => ({
+          ...prevState,
+          inputSearch: prevState.inputSearch[0],
+        }));
+      }
+      return `${firstLetterEndpoint}${state.inputSearch[0]}`;
     }
   };
   return (
@@ -33,8 +50,9 @@ export default function SearchBar() {
       <input
         data-testid="search-input"
         type="text"
+        name="inputSearch"
+        value={ state.inputSearch }
         onChange={ onChange }
-
       />
       <label htmlFor="ingredient">
         <input
@@ -43,6 +61,7 @@ export default function SearchBar() {
           id="ingredient"
           name="search"
           value="ingredient"
+          onChange={ onChange }
         />
         Ingredient
       </label>
@@ -53,6 +72,7 @@ export default function SearchBar() {
           id="name"
           name="search"
           value="name"
+          onChange={ onChange }
         />
         Name
       </label>
@@ -63,13 +83,17 @@ export default function SearchBar() {
           id="first-letter"
           name="search"
           value="first-letter"
+          onChange={ onChange }
         />
         First letter
       </label>
       <button
         type="button"
         data-testid="exec-search-btn"
-        onClick={ () => request(searchClick()) }
+        onClick={ async () => {
+          console.log(getEndpoint());
+          console.log(await request(getEndpoint()));
+        } }
       >
         buscar
 
