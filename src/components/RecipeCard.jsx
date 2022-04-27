@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function RecipeCard({ recipe, index }) {
+export default function RecipeCard({ title, image, index }) {
   return (
     <div data-testid={ `${index}-recipe-card` } className="recipe-card">
       <img
         data-testid={ `${index}-card-img` }
-        src={ recipe.strMealThumb }
-        alt={ recipe.strMeal }
+        src={ image }
+        alt={ title }
       />
-      <h3 data-testid={ `${index}-card-name` }>{ recipe.strMeal }</h3>
+      <h3 data-testid={ `${index}-card-name` }>{ title }</h3>
     </div>
   );
 }

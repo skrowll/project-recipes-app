@@ -27,7 +27,12 @@ export default function Foods() {
       <Header title="Foods" />
       { searchResult.meals?.slice(0, MAX_ITEMS).map(
         (each, index) => (
-          <RecipeCard key={ each.idMeal } recipe={ each } index={ index } />
+          <RecipeCard
+            key={ each.idMeal }
+            title={ each.strMeal }
+            image={ each.strMealThumb }
+            index={ index }
+          />
         ),
       )}
     </div>
