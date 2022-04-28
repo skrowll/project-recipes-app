@@ -11,6 +11,8 @@ import Favorite from './pages/Favorite';
 import Explore from './pages/Explore';
 import ExploreFoods from './pages/ExploreFoods';
 import ExploreDrinks from './pages/ExploreDrinks';
+import ExploreIngredient from './pages/ExploreIngredient';
+import ExploreNationty from './pages/ExploreNationty';
 
 function App() {
   return (
@@ -27,6 +29,9 @@ function App() {
         <Route exact path="/foods/:id" component={ Recipe } />
         <Route exact path="/done-recipes" component={ Done } />
         <Route exact path="/favorite-recipes" component={ Favorite } />
+        <Route exact path="/explore/foods/ingredients" component={ ExploreIngredient } />
+        <Route exact path="/explore/drinks/ingredients" component={ ExploreIngredient } />
+        <Route exact path="/explore/foods/nationalities" component={ ExploreNationty } />
       </Switch>
     </div>
   );
