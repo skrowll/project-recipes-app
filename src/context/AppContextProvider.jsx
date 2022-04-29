@@ -17,6 +17,7 @@ export const COCKTAIL_ENDPOINTS = {
 export default function AppContextProvider({ children }) {
   const [searchEndpoints, setSearchEndpoints] = useState(FOOD_ENDPOINTS);
   const [searchResult, setSearchResult] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const search = (data) => {
     setSearchResult(data);
@@ -27,6 +28,8 @@ export default function AppContextProvider({ children }) {
     setSearchEndpoints,
     searchResult,
     search,
+    selectedCategory,
+    setSelectedCategory,
   };
   return (
     <AppContext.Provider value={ contextValue }>

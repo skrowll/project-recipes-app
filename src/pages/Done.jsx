@@ -5,7 +5,7 @@ import Header from '../components/Header';
 export default function Done() {
   return (
     <div>
-      <Header title="Profile" />
+      <Header title="Done Recipes" />
     </div>
   );
 }
