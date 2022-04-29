@@ -1,0 +1,8 @@
+.results-content {
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  margin-bottom: 80px;
+  padding: 20px;
+}

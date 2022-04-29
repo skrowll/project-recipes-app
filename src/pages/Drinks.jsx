@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import '../styles/pages/Foods-Drinks.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import RecipeCard from '../components/RecipeCard';
 import AppContext from '../context/AppContext';
 import { COCKTAIL_ENDPOINTS } from '../context/AppContextProvider';
+import RecipesRecomended from '../components/RecipesRecomended';
 
 const MAX_ITEMS = 12;
 
@@ -29,16 +31,19 @@ export default function Drinks() {
   return (
     <div>
       <Header title="Drinks" />
-      { searchResult.drinks?.slice(0, MAX_ITEMS).map(
-        (each, index) => (
-          <RecipeCard
-            key={ each.idDrink }
-            title={ each.strDrink }
-            image={ each.strDrinkThumb }
-            index={ index }
-          />
-        ),
-      )}
+      <RecipesRecomended search="drink" />
+      <div className="results-content">
+        { searchResult.drinks?.slice(0, MAX_ITEMS).map(
+          (each, index) => (
+            <RecipeCard
+              key={ each.idDrink }
+              title={ each.strDrink }
+              image={ each.strDrinkThumb }
+              index={ index }
+            />
+          ),
+        )}
+      </div>
       <Footer />
     </div>
   );
