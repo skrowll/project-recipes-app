@@ -21,8 +21,6 @@ export default function Drinks() {
   const { setSearchEndpoints, searchResult, search,
     selectedCategory } = useContext(AppContext);
 
-  console.log('teste');
-
   useEffect(() => {
     if (selectedCategory !== '') {
       request(`${filterByCategoryEndpoint}${selectedCategory}`).then((drinks) => {

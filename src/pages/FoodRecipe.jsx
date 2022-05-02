@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 
 import '../styles/pages/FoodRecipe.css';
+import { Link } from 'react-router-dom';
 import request from '../services/services';
 
-const recipeDetailsEndpoint = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
+export const recipeDetailsEndpoint = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const recomendationDrinkRecipes = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 
 export default function FoodRecipe({ match: { params: { id } } }) {
@@ -97,13 +98,15 @@ export default function FoodRecipe({ match: { params: { id } } }) {
             )))}
         </div>
       </div>
-      <button
-        type="button"
-        data-testid="start-recipe-btn"
-        className="start-recipe"
-      >
-        Start Recipe
-      </button>
+      <Link to={ `/foods/${recipe.idMeal}/in-progress` }>
+        <button
+          type="button"
+          data-testid="start-recipe-btn"
+          className="start-recipe"
+        >
+          Start Recipe
+        </button>
+      </Link>
     </div>
   );
 }
