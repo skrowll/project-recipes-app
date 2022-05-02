@@ -71,7 +71,6 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
           alt="s"
         />
         <h3 data-testid="recipe-title">{ recipe.strDrink }</h3>
-        <button data-testid="start-recipe-btn" type="button">Start</button>
         <button data-testid="share-btn" type="button">Share</button>
         <button data-testid="favorite-btn" type="button">Favorite</button>
         <p data-testid="recipe-category">{ recipe.strAlcoholic }</p>
