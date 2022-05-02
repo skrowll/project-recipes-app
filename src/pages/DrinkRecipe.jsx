@@ -53,7 +53,7 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
               alt={ meal.strMeal }
             />
             <p>{ meal.strCategory }</p>
-            <h3>{ meal.strMeal }</h3>
+            <h3 data-testid={ `${index}-recomendation-title` }>{ meal.strMeal }</h3>
           </div>
         )));
     }
@@ -98,9 +98,12 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
       </div>
       <div>
         <h2>Recommended</h2>
-        {
-          cardRecomendation()
-        }
+        <div style={ { height: '300px', display: 'flex', overflowY: 'hidden' } }>
+          {
+            cardRecomendation()
+          }
+
+        </div>
       </div>
       <button
         type="button"
