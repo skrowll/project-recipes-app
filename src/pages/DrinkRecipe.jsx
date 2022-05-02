@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import request from '../services/services';
 
+import '../styles/pages/DrinkRecipe.css';
+
 const recipeDetailsEndpoint = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 const recomendationMealRecipes = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 
@@ -53,7 +55,7 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
               alt={ meal.strMeal }
             />
             <p>{ meal.strCategory }</p>
-            <h3>{ meal.strMeal }</h3>
+            <h3 data-testid={ `${index}-recomendation-title` }>{ meal.strMeal }</h3>
           </div>
         )));
     }
@@ -69,7 +71,6 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
           alt="s"
         />
         <h3 data-testid="recipe-title">{ recipe.strDrink }</h3>
-        <button data-testid="start-recipe-btn" type="button">Start</button>
         <button data-testid="share-btn" type="button">Share</button>
         <button data-testid="favorite-btn" type="button">Favorite</button>
         <p data-testid="recipe-category">{ recipe.strAlcoholic }</p>
@@ -98,13 +99,17 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
       </div>
       <div>
         <h2>Recommended</h2>
-        {
-          cardRecomendation()
-        }
+        <div style={ { height: '300px', display: 'flex', overflowY: 'hidden' } }>
+          {
+            cardRecomendation()
+          }
+
+        </div>
       </div>
       <button
         type="button"
         data-testid="start-recipe-btn"
+        className="start-recipe"
       >
         Start Recipe
       </button>

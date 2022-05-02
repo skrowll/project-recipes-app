@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
+
+import '../styles/pages/FoodRecipe.css';
 import request from '../services/services';
 
 const recipeDetailsEndpoint = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
@@ -49,7 +51,6 @@ export default function FoodRecipe({ match: { params: { id } } }) {
           alt="s"
         />
         <h3 data-testid="recipe-title">{ recipe.strMeal }</h3>
-        <button data-testid="start-recipe-btn" type="button">Start</button>
         <button data-testid="share-btn" type="button">Share</button>
         <button data-testid="favorite-btn" type="button">Favorite</button>
         <p data-testid="recipe-category">{ recipe.strCategory }</p>
@@ -78,25 +79,28 @@ export default function FoodRecipe({ match: { params: { id } } }) {
       </div>
       <div>
         <h2>Recommended</h2>
-        { recomendation.length > 0 && (
-          recomendation.map((drink, index) => (
-            <div
-              key={ drink.idDrink }
-              data-testid={ `${index}-recomendation-card` }
-            >
-              <img
-                style={ { width: '200px' } } // remover se for estilzar com css
-                src={ drink.strDrinkThumb }
-                alt={ drink.strDrink }
-              />
-              <p>{ drink.strCategory }</p>
-              <h3>{ drink.strDrink }</h3>
-            </div>
-          )))}
+        <div style={ { height: '300px', display: 'flex', overflowY: 'hidden' } }>
+          { recomendation.length > 0 && (
+            recomendation.map((drink, index) => (
+              <div
+                key={ drink.idDrink }
+                data-testid={ `${index}-recomendation-card` }
+              >
+                <img
+                  style={ { width: '200px' } } // remover se for estilzar com css
+                  src={ drink.strDrinkThumb }
+                  alt={ drink.strDrink }
+                />
+                <p>{ drink.strCategory }</p>
+                <h3 data-testid={ `${index}-recomendation-title` }>{ drink.strDrink }</h3>
+              </div>
+            )))}
+        </div>
       </div>
       <button
         type="button"
         data-testid="start-recipe-btn"
+        className="start-recipe"
       >
         Start Recipe
       </button>
