@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
+
+import '../styles/pages/FoodRecipe.css';
 import request from '../services/services';
 
 const recipeDetailsEndpoint = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
@@ -98,6 +100,7 @@ export default function FoodRecipe({ match: { params: { id } } }) {
       <button
         type="button"
         data-testid="start-recipe-btn"
+        className="start-recipe"
       >
         Start Recipe
       </button>

@@ -1,0 +1,21 @@
+.recipes-recomended section {
+  align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  overflow-x: scroll;
+  width: 700px;
+}
+
+.start-recipe {
+  background-color: rgb(119, 206, 119);
+  border-radius: 8px;
+  bottom: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  height: 80px;
+  left: 40%;
+  position: fixed;
+  width: 160px;
+  z-index: 10;
+}
