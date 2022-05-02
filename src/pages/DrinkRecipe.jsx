@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import request from '../services/services';
 
+import '../styles/pages/DrinkRecipe.css';
+
 const recipeDetailsEndpoint = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 const recomendationMealRecipes = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 
@@ -108,6 +110,7 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
       <button
         type="button"
         data-testid="start-recipe-btn"
+        className="start-recipe"
       >
         Start Recipe
       </button>
