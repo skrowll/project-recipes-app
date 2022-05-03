@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
-
 import '../styles/pages/FoodRecipe.css';
 import { Link } from 'react-router-dom';
+import clipboardCopy from 'clipboard-copy';
 import request from '../services/services';
+import shareIcon from '../images/shareIcon.svg';
 
 export const recipeDetailsEndpoint = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const recomendationDrinkRecipes = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
@@ -11,6 +12,8 @@ const recomendationDrinkRecipes = 'https://www.thecocktaildb.com/api/json/v1/1/s
 export default function FoodRecipe({ match: { params: { id } } }) {
   const [recipe, setRecipe] = useState({});
   const [recomendation, setRecomendation] = useState({});
+  const [startRecipe, setStartRecipe] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   useEffect(() => {
     request(recipeDetailsEndpoint + id).then((res) => {
@@ -20,6 +23,10 @@ export default function FoodRecipe({ match: { params: { id } } }) {
       const MAX_LENGTH = 6;
       setRecomendation((res.drinks).slice(0, MAX_LENGTH));
     });
+    const ingredientLocalStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (!ingredientLocalStorage) {
+      setStartRecipe(true);
+    }
   }, [id]);
 
   const getIngredients = () => {
@@ -41,6 +48,10 @@ export default function FoodRecipe({ match: { params: { id } } }) {
     }
     return [];
   };
+  const copy = () => {
+    clipboardCopy(window.location.href);
+    setLinkCopied(true);
+  };
 
   return (
     <div>
@@ -51,8 +62,16 @@ export default function FoodRecipe({ match: { params: { id } } }) {
           src={ recipe.strMealThumb }
           alt="s"
         />
+        {linkCopied && <p>Link copied!</p>}
         <h3 data-testid="recipe-title">{ recipe.strMeal }</h3>
-        <button data-testid="share-btn" type="button">Share</button>
+        <button
+          data-testid="share-btn"
+          type="button"
+          onClick={ copy }
+        >
+          <img src={ shareIcon } alt="Share" />
+
+        </button>
         <button data-testid="favorite-btn" type="button">Favorite</button>
         <p data-testid="recipe-category">{ recipe.strCategory }</p>
         <ul>
@@ -104,7 +123,7 @@ export default function FoodRecipe({ match: { params: { id } } }) {
           data-testid="start-recipe-btn"
           className="start-recipe"
         >
-          Start Recipe
+          { startRecipe ? 'Start Recipe' : 'Continue Recipe' }
         </button>
       </Link>
     </div>

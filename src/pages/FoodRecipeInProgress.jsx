@@ -32,6 +32,14 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
     return [];
   };
 
+  const onClick = () => {
+    const inputcheckbox = document.querySelectorAll('input:checked');
+    const ingredient = [];
+    inputcheckbox.forEach(({ value }) => ingredient.push(value));
+    localStorage.setItem('inProgressRecipes',
+      JSON.stringify({ meals: { [`${id}`]: ingredient } }));
+  };
+
   return (
     <div>
       <img
@@ -55,6 +63,8 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
                 <input
                   id={ `${index}-ingedient-step` }
                   type="checkbox"
+                  value={ ingredient }
+                  onClick={ onClick }
                 />
                 &nbsp;
                 {`${ingredient} 
