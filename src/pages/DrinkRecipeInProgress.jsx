@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
-import request from '../services/services';
+import { request } from '../services/services';
 import { recipeDetailsEndpoint } from './DrinkRecipe';
 
 export default function DrinkRecipeInProgress({ match: { params: { id } } }) {

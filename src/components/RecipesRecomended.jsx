@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import '../styles/components/RecipesRecomended.css';
-import request from '../services/services';
+import { request } from '../services/services';
 import AppContext from '../context/AppContext';
 
 const urlFood = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
