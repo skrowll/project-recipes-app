@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
-import request from '../services/services';
+import { request } from '../services/services';
 
 export default function SearchBar() {
   const [state, setState] = useState({

@@ -3,8 +3,10 @@ import propTypes from 'prop-types';
 import '../styles/pages/FoodRecipe.css';
 import { Link } from 'react-router-dom';
 import clipboardCopy from 'clipboard-copy';
-import request from '../services/services';
+import { isFavorite, removeFavorite, request, saveFavorite } from '../services/services';
 import shareIcon from '../images/shareIcon.svg';
+import whiteHeart from '../images/whiteHeartIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
 
 export const recipeDetailsEndpoint = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const recomendationDrinkRecipes = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
@@ -14,6 +16,7 @@ export default function FoodRecipe({ match: { params: { id } } }) {
   const [recomendation, setRecomendation] = useState({});
   const [startRecipe, setStartRecipe] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
     request(recipeDetailsEndpoint + id).then((res) => {
@@ -27,6 +30,7 @@ export default function FoodRecipe({ match: { params: { id } } }) {
     if (!ingredientLocalStorage) {
       setStartRecipe(true);
     }
+    setFavorite(isFavorite(id, 'food'));
   }, [id]);
 
   const getIngredients = () => {
@@ -53,6 +57,24 @@ export default function FoodRecipe({ match: { params: { id } } }) {
     setLinkCopied(true);
   };
 
+  const handleFavoriteClick = () => {
+    if (!isFavorite(recipe.idMeal, 'food')) {
+      saveFavorite({
+        id: recipe.idMeal,
+        type: 'food',
+        nationality: recipe.strArea,
+        category: recipe.strCategory,
+        alcoholicOrNot: '',
+        name: recipe.strMeal,
+        image: recipe.strMealThumb,
+      });
+      setFavorite(true);
+      return;
+    }
+    removeFavorite(recipe.idMeal);
+    setFavorite(false);
+  };
+
   return (
     <div>
       <div>
@@ -72,7 +94,16 @@ export default function FoodRecipe({ match: { params: { id } } }) {
           <img src={ shareIcon } alt="Share" />
 
         </button>
-        <button data-testid="favorite-btn" type="button">Favorite</button>
+        <button
+          type="button"
+          onClick={ handleFavoriteClick }
+        >
+          <img
+            data-testid="favorite-btn"
+            src={ favorite ? blackHeart : whiteHeart }
+            alt="whiteHeart"
+          />
+        </button>
         <p data-testid="recipe-category">{ recipe.strCategory }</p>
         <ul>
           {

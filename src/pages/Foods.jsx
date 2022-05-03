@@ -8,7 +8,7 @@ import Header from '../components/Header';
 import RecipeCard from '../components/RecipeCard';
 import Footer from '../components/Footer';
 import RecipesRecomended from '../components/RecipesRecomended';
-import request from '../services/services';
+import { request } from '../services/services';
 
 const MAX_ITEMS = 12;
 

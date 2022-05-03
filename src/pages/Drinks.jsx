@@ -9,7 +9,7 @@ import RecipeCard from '../components/RecipeCard';
 import AppContext from '../context/AppContext';
 import { COCKTAIL_ENDPOINTS } from '../context/AppContextProvider';
 import RecipesRecomended from '../components/RecipesRecomended';
-import request from '../services/services';
+import { request } from '../services/services';
 
 const MAX_ITEMS = 12;
 
