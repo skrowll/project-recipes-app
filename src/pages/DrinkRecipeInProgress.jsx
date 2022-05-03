@@ -31,6 +31,13 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
     }
     return [];
   };
+  const onClick = () => {
+    const inputcheckbox = document.querySelectorAll('input:checked');
+    const ingredient = [];
+    inputcheckbox.forEach(({ value }) => ingredient.push(value));
+    localStorage.setItem('inProgressRecipes',
+      JSON.stringify({ cocktails: { [`${id}`]: ingredient } }));
+  };
 
   return (
     <div>
@@ -55,6 +62,8 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
                 <input
                   id={ `${index}-ingedient-step` }
                   type="checkbox"
+                  value={ ingredient }
+                  onClick={ onClick }
                 />
                 &nbsp;
                 {`${ingredient} 
