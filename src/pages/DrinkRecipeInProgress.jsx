@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
-import { request } from '../services/services';
+import { containsIngredient, removeInProgressIngredient, request,
+  saveInProgressIngredient } from '../services/services';
 import { recipeDetailsEndpoint } from './DrinkRecipe';
 
 export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
   const [recipe, setRecipe] = useState({});
+  const [checkedIngredients, setCheckedIngredients] = useState({});
 
   useEffect(() => {
     request(recipeDetailsEndpoint + id).then((res) => {
@@ -31,12 +33,14 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
     }
     return [];
   };
-  const onClick = () => {
-    const inputcheckbox = document.querySelectorAll('input:checked');
-    const ingredient = [];
-    inputcheckbox.forEach(({ value }) => ingredient.push(value));
-    localStorage.setItem('inProgressRecipes',
-      JSON.stringify({ cocktails: { [`${id}`]: ingredient } }));
+
+  const ingredientChange = ({ target: { value, checked } }) => {
+    if (checked) {
+      saveInProgressIngredient('cocktails', id, value);
+    } else {
+      removeInProgressIngredient('cocktails', id, value);
+    }
+    setCheckedIngredients({ ...checkedIngredients, [value]: checked });
   };
 
   return (
@@ -63,7 +67,8 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
                   id={ `${index}-ingedient-step` }
                   type="checkbox"
                   value={ ingredient }
-                  onClick={ onClick }
+                  checked={ containsIngredient('cocktails', id, ingredient) }
+                  onChange={ ingredientChange }
                 />
                 &nbsp;
                 {`${ingredient} 
