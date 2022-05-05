@@ -20,7 +20,8 @@ export const removeFavorite = (id) => {
 
 export const saveFavorite = (recipe) => {
   if (!isFavorite(recipe.id, recipe.type)) {
-    const newFavorites = getFavorites().push(recipe);
+    const prev = getFavorites();
+    const newFavorites = [...prev, recipe];
     localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
   }
 };

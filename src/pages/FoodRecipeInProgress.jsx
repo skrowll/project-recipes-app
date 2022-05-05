@@ -37,8 +37,10 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
   const ingredientChange = ({ target: { value, checked } }) => {
     if (checked) {
       saveInProgressIngredient('meals', id, value);
+      // aqui adiciona o risco
     } else {
       removeInProgressIngredient('meals', id, value);
+      // retira o risco
     }
     setCheckedIngredients({ ...checkedIngredients, [value]: checked });
   };
