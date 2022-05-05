@@ -7,7 +7,11 @@ export default function ExploreFoods() {
   return (
     <div>
       <Header title="Explore Foods" />
-      <FilterExplore renderButton routeInfredientes="/explore/foods/ingredients" />
+      <FilterExplore
+        renderButton
+        routeInfredientes="/explore/foods/ingredients"
+        page="food"
+      />
       <Footer />
     </div>
   );

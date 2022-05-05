@@ -10,6 +10,7 @@ export default function ExploreDrinks() {
       <FilterExplore
         renderButton={ false }
         routeInfredientes="/explore/drinks/ingredients"
+        page="drink"
       />
       <Footer />
     </div>
