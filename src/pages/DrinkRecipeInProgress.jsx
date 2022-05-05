@@ -16,13 +16,6 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
   const [linkCopied, setLinkCopied] = useState(false);
   const [favorite, setFavorite] = useState(false);
 
-  useEffect(() => {
-    request(recipeDetailsEndpoint + id).then((res) => {
-      setRecipe(res.drinks[0]);
-    });
-    setFavorite(isFavorite(id, 'drink'));
-  }, [id]);
-
   const getIngredients = () => {
     const ingredients = Object.keys(recipe)
       .filter((key) => key.includes('strIngredient'));
@@ -32,6 +25,14 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
     }
     return [];
   };
+
+  useEffect(() => {
+    request(recipeDetailsEndpoint + id).then((res) => {
+      setRecipe(res.drinks[0]);
+    });
+    setFavorite(isFavorite(id, 'drink'));
+    console.log(getIngredients());
+  }, [id]);
 
   const getMeasures = () => {
     const measures = Object.keys(recipe)
@@ -128,7 +129,13 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
       <br />
       <p data-testid="instructions">{recipe.strInstructions}</p>
       <br />
-      <button data-testid="finish-recipe-btn" type="button">Finish</button>
+      <button
+        data-testid="finish-recipe-btn"
+        type="button"
+
+      >
+        Finish
+      </button>
     </div>
   );
 }

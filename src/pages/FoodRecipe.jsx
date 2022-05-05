@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import '../styles/pages/FoodRecipe.css';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,6 @@ import { isFavorite, removeFavorite, request, saveFavorite } from '../services/s
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeart from '../images/whiteHeartIcon.svg';
 import blackHeart from '../images/blackHeartIcon.svg';
-import AppContext from '../context/AppContext';
 
 export const recipeDetailsEndpoint = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const recomendationDrinkRecipes = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
@@ -17,7 +16,7 @@ export default function FoodRecipe({ match: { params: { id } } }) {
   const [recomendation, setRecomendation] = useState({});
   const [startRecipe, setStartRecipe] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
-  const { favorite, setFavorite } = useContext(AppContext);
+  const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
     request(recipeDetailsEndpoint + id).then((res) => {
