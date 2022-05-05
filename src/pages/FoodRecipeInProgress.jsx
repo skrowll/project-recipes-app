@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
-import { containsIngredient, removeInProgressIngredient,
-  request, saveInProgressIngredient } from '../services/services';
+import clipboardCopy from 'clipboard-copy';
+import { containsIngredient, isFavorite, removeFavorite, removeInProgressIngredient,
+  request, saveFavorite, saveInProgressIngredient } from '../services/services';
 import { recipeDetailsEndpoint } from './FoodRecipe';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeart from '../images/whiteHeartIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
 
 export default function FoodRecipeInProgress({ match: { params: { id } } }) {
   const [recipe, setRecipe] = useState({});
   const [checkedIngredients, setCheckedIngredients] = useState({});
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
     request(recipeDetailsEndpoint + id).then((res) => {
       setRecipe(res.meals[0]);
     });
+    setFavorite(isFavorite(id, 'food'));
   }, [id]);
 
   const getIngredients = () => {
@@ -44,6 +51,28 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
     }
     setCheckedIngredients({ ...checkedIngredients, [value]: checked });
   };
+  const copy = () => {
+    clipboardCopy(`http://localhost:3000/foods/${id}}`);
+    setLinkCopied(true);
+  };
+
+  const handleFavoriteClick = () => {
+    if (!isFavorite(recipe.idMeal, 'food')) {
+      saveFavorite({
+        id: recipe.idMeal,
+        type: 'food',
+        nationality: recipe.strArea,
+        category: recipe.strCategory,
+        alcoholicOrNot: '',
+        name: recipe.strMeal,
+        image: recipe.strMealThumb,
+      });
+      setFavorite(true);
+      return;
+    }
+    removeFavorite(recipe.idMeal);
+    setFavorite(false);
+  };
 
   return (
     <div>
@@ -53,9 +82,26 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
         src={ recipe.strMealThumb }
         alt={ recipe.strMeal }
       />
-      <h3 data-testid="recipe-title">{recipe.strMeal}</h3>
-      <button data-testid="share-btn" type="button">Share</button>
-      <button data-testid="favorite-btn" type="button">Favorite</button>
+      {linkCopied && <p>Link copied!</p>}
+      <h3 data-testid="recipe-title">{ recipe.strMeal }</h3>
+      <button
+        data-testid="share-btn"
+        type="button"
+        onClick={ copy }
+      >
+        <img src={ shareIcon } alt="Share" />
+
+      </button>
+      <button
+        type="button"
+        onClick={ handleFavoriteClick }
+      >
+        <img
+          data-testid="favorite-btn"
+          src={ favorite ? blackHeart : whiteHeart }
+          alt="whiteHeart"
+        />
+      </button>
       <p data-testid="recipe-category">{recipe.strCategory}</p>
       <ul>
         {

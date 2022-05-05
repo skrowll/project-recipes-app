@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
-import { containsIngredient, removeInProgressIngredient, request,
+import clipboardCopy from 'clipboard-copy';
+import { containsIngredient, isFavorite,
+  removeFavorite, removeInProgressIngredient, request,
+  saveFavorite,
   saveInProgressIngredient } from '../services/services';
 import { recipeDetailsEndpoint } from './DrinkRecipe';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeart from '../images/whiteHeartIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
 
 export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
   const [recipe, setRecipe] = useState({});
   const [checkedIngredients, setCheckedIngredients] = useState({});
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
     request(recipeDetailsEndpoint + id).then((res) => {
       setRecipe(res.drinks[0]);
     });
+    setFavorite(isFavorite(id, 'drink'));
   }, [id]);
 
   const getIngredients = () => {
@@ -42,6 +51,28 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
     }
     setCheckedIngredients({ ...checkedIngredients, [value]: checked });
   };
+  const copy = () => {
+    clipboardCopy(`http://localhost:3000/drinks/${id}`);
+    setLinkCopied(true);
+  };
+
+  const handleFavoriteClick = () => {
+    if (!isFavorite(recipe.idDrink, 'drink')) {
+      saveFavorite({
+        id: recipe.idDrink,
+        type: 'drink',
+        nationality: '',
+        category: recipe.strCategory,
+        alcoholicOrNot: recipe.strAlcoholic,
+        name: recipe.strDrink,
+        image: recipe.strDrinkThumb,
+      });
+      setFavorite(true);
+      return;
+    }
+    removeFavorite(recipe.idDrink);
+    setFavorite(false);
+  };
 
   return (
     <div>
@@ -51,9 +82,26 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
         src={ recipe.strDrinkThumb }
         alt={ recipe.strDrink }
       />
-      <h3 data-testid="recipe-title">{recipe.strDrink}</h3>
-      <button data-testid="share-btn" type="button">Share</button>
-      <button data-testid="favorite-btn" type="button">Favorite</button>
+      {linkCopied && <p>Link copied!</p>}
+      <h3 data-testid="recipe-title">{ recipe.strDrink }</h3>
+      <button
+        data-testid="share-btn"
+        type="button"
+        onClick={ copy }
+      >
+        <img src={ shareIcon } alt="Share" />
+
+      </button>
+      <button
+        type="button"
+        onClick={ handleFavoriteClick }
+      >
+        <img
+          data-testid="favorite-btn"
+          src={ favorite ? blackHeart : whiteHeart }
+          alt="whiteHeart"
+        />
+      </button>
       <p data-testid="recipe-category">{recipe.strCategory}</p>
       <ul>
         {
