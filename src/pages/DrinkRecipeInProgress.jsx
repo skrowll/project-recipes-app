@@ -5,6 +5,7 @@ import clipboardCopy from 'clipboard-copy';
 import { containsIngredient, isFavorite,
   removeFavorite, removeInProgressIngredient, request,
   saveFavorite,
+  saveFinish,
   saveInProgressIngredient } from '../services/services';
 import { recipeDetailsEndpoint } from './DrinkRecipe';
 import shareIcon from '../images/shareIcon.svg';
@@ -41,8 +42,6 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
       setRecipe(res.drinks[0]);
     });
     setFavorite(isFavorite(id, 'drink'));
-    console.log(getIngredients());
-    handleFinish();
   }, [id]);
 
   const getMeasures = () => {
@@ -146,6 +145,17 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
           data-testid="finish-recipe-btn"
           type="button"
           disabled={ disabled }
+          onClick={
+            () => saveFinish([{
+              id: recipe.idDrink,
+              type: 'drink',
+              nationality: '',
+              category: recipe.strCategory,
+              alcoholicOrNot: recipe.strAlcoholic,
+              name: recipe.strDrink,
+              image: recipe.strDrinkThumb,
+            }])
+          }
         >
           Finish
         </button>

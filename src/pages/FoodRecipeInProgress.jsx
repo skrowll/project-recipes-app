@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import clipboardCopy from 'clipboard-copy';
 import { containsIngredient, isFavorite, removeFavorite, removeInProgressIngredient,
-  request, saveFavorite, saveInProgressIngredient } from '../services/services';
+  request, saveFavorite, saveInProgressIngredient,
+  saveFinish } from '../services/services';
 import { recipeDetailsEndpoint } from './FoodRecipe';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeart from '../images/whiteHeartIcon.svg';
@@ -39,7 +40,6 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
       setRecipe(res.meals[0]);
     });
     setFavorite(isFavorite(id, 'food'));
-    handleFinish();
   }, [id]);
 
   const getMeasures = () => {
@@ -145,6 +145,17 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
           data-testid="finish-recipe-btn"
           type="button"
           disabled={ disabled }
+          onClick={
+            () => saveFinish({
+              id: recipe.idMeal,
+              type: 'food',
+              nationality: recipe.strArea,
+              category: recipe.strCategory,
+              alcoholicOrNot: '',
+              name: recipe.strMeal,
+              image: recipe.strMealThumb,
+            })
+          }
         >
           Finish
         </button>
