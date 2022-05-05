@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
-import { containsIngredient, removeInProgressIngredient,
-  request, saveInProgressIngredient } from '../services/services';
+import clipboardCopy from 'clipboard-copy';
+import { containsIngredient, isFavorite, removeFavorite, removeInProgressIngredient,
+  request, saveFavorite, saveInProgressIngredient,
+  saveFinish } from '../services/services';
 import { recipeDetailsEndpoint } from './FoodRecipe';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeart from '../images/whiteHeartIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
 
 export default function FoodRecipeInProgress({ match: { params: { id } } }) {
   const [recipe, setRecipe] = useState({});
   const [checkedIngredients, setCheckedIngredients] = useState({});
-
-  useEffect(() => {
-    request(recipeDetailsEndpoint + id).then((res) => {
-      setRecipe(res.meals[0]);
-    });
-  }, [id]);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [favorite, setFavorite] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   const getIngredients = () => {
     const ingredients = Object.keys(recipe)
@@ -23,6 +26,21 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
     }
     return [];
   };
+
+  const handleFinish = () => {
+    const ingredient = document.querySelectorAll('input:checked').length
+    === getIngredients().length;
+    console.log(ingredient);
+    setDisabled(!ingredient);
+    console.log(disabled);
+  };
+
+  useEffect(() => {
+    request(recipeDetailsEndpoint + id).then((res) => {
+      setRecipe(res.meals[0]);
+    });
+    setFavorite(isFavorite(id, 'food'));
+  }, [id]);
 
   const getMeasures = () => {
     const measures = Object.keys(recipe)
@@ -44,6 +62,28 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
     }
     setCheckedIngredients({ ...checkedIngredients, [value]: checked });
   };
+  const copy = () => {
+    clipboardCopy(`http://localhost:3000/foods/${id}`);
+    setLinkCopied(true);
+  };
+
+  const handleFavoriteClick = () => {
+    if (!isFavorite(recipe.idMeal, 'food')) {
+      saveFavorite({
+        id: recipe.idMeal,
+        type: 'food',
+        nationality: recipe.strArea,
+        category: recipe.strCategory,
+        alcoholicOrNot: '',
+        name: recipe.strMeal,
+        image: recipe.strMealThumb,
+      });
+      setFavorite(true);
+      return;
+    }
+    removeFavorite(recipe.idMeal);
+    setFavorite(false);
+  };
 
   return (
     <div>
@@ -53,9 +93,26 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
         src={ recipe.strMealThumb }
         alt={ recipe.strMeal }
       />
-      <h3 data-testid="recipe-title">{recipe.strMeal}</h3>
-      <button data-testid="share-btn" type="button">Share</button>
-      <button data-testid="favorite-btn" type="button">Favorite</button>
+      {linkCopied && <p>Link copied!</p>}
+      <h3 data-testid="recipe-title">{ recipe.strMeal }</h3>
+      <button
+        data-testid="share-btn"
+        type="button"
+        onClick={ copy }
+      >
+        <img src={ shareIcon } alt="Share" />
+
+      </button>
+      <button
+        type="button"
+        onClick={ handleFavoriteClick }
+      >
+        <img
+          data-testid="favorite-btn"
+          src={ favorite ? blackHeart : whiteHeart }
+          alt="whiteHeart"
+        />
+      </button>
       <p data-testid="recipe-category">{recipe.strCategory}</p>
       <ul>
         {
@@ -71,6 +128,7 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
                   value={ ingredient }
                   checked={ containsIngredient('meals', id, ingredient) }
                   onChange={ ingredientChange }
+                  onClick={ handleFinish }
                 />
                 &nbsp;
                 {`${ingredient} 
@@ -82,7 +140,26 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
       <br />
       <p data-testid="instructions">{recipe.strInstructions}</p>
       <br />
-      <button data-testid="finish-recipe-btn" type="button">Finish</button>
+      <Link to="/done-recipes">
+        <button
+          data-testid="finish-recipe-btn"
+          type="button"
+          disabled={ disabled }
+          onClick={
+            () => saveFinish({
+              id: recipe.idMeal,
+              type: 'food',
+              nationality: recipe.strArea,
+              category: recipe.strCategory,
+              alcoholicOrNot: '',
+              name: recipe.strMeal,
+              image: recipe.strMealThumb,
+            })
+          }
+        >
+          Finish
+        </button>
+      </Link>
     </div>
   );
 }

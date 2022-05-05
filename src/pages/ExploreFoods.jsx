@@ -9,7 +9,7 @@ export default function ExploreFoods() {
       <Header title="Explore Foods" />
       <FilterExplore
         renderButton
-        routeInfredientes="/explore/foods/ingredients"
+        routeIngredientes="/explore/foods/ingredients"
         page="food"
       />
       <Footer />

@@ -3,8 +3,7 @@ import propTypes from 'prop-types';
 import '../styles/pages/FoodRecipe.css';
 import { Link } from 'react-router-dom';
 import clipboardCopy from 'clipboard-copy';
-import { isFavorite, isRecipeInProgress,
-  removeFavorite, request, saveFavorite } from '../services/services';
+import { isFavorite, removeFavorite, request, saveFavorite } from '../services/services';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeart from '../images/whiteHeartIcon.svg';
 import blackHeart from '../images/blackHeartIcon.svg';
@@ -27,7 +26,8 @@ export default function FoodRecipe({ match: { params: { id } } }) {
       const MAX_LENGTH = 6;
       setRecomendation((res.drinks).slice(0, MAX_LENGTH));
     });
-    if (!isRecipeInProgress('meals', id)) {
+    const ingredientLocalStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (!ingredientLocalStorage) {
       setStartRecipe(true);
     }
     setFavorite(isFavorite(id, 'food'));
