@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import clipboardCopy from 'clipboard-copy';
 import { containsIngredient, isFavorite, removeFavorite, removeInProgressIngredient,
@@ -13,13 +14,7 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
   const [checkedIngredients, setCheckedIngredients] = useState({});
   const [linkCopied, setLinkCopied] = useState(false);
   const [favorite, setFavorite] = useState(false);
-
-  useEffect(() => {
-    request(recipeDetailsEndpoint + id).then((res) => {
-      setRecipe(res.meals[0]);
-    });
-    setFavorite(isFavorite(id, 'food'));
-  }, [id]);
+  const [disabled, setDisabled] = useState(true);
 
   const getIngredients = () => {
     const ingredients = Object.keys(recipe)
@@ -30,6 +25,22 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
     }
     return [];
   };
+
+  const handleFinish = () => {
+    const ingredient = document.querySelectorAll('input:checked').length
+    === getIngredients().length;
+    console.log(ingredient);
+    setDisabled(!ingredient);
+    console.log(disabled);
+  };
+
+  useEffect(() => {
+    request(recipeDetailsEndpoint + id).then((res) => {
+      setRecipe(res.meals[0]);
+    });
+    setFavorite(isFavorite(id, 'food'));
+    handleFinish();
+  }, [id]);
 
   const getMeasures = () => {
     const measures = Object.keys(recipe)
@@ -52,7 +63,7 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
     setCheckedIngredients({ ...checkedIngredients, [value]: checked });
   };
   const copy = () => {
-    clipboardCopy(`http://localhost:3000/foods/${id}}`);
+    clipboardCopy(`http://localhost:3000/foods/${id}`);
     setLinkCopied(true);
   };
 
@@ -117,6 +128,7 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
                   value={ ingredient }
                   checked={ containsIngredient('meals', id, ingredient) }
                   onChange={ ingredientChange }
+                  onClick={ handleFinish }
                 />
                 &nbsp;
                 {`${ingredient} 
@@ -128,7 +140,15 @@ export default function FoodRecipeInProgress({ match: { params: { id } } }) {
       <br />
       <p data-testid="instructions">{recipe.strInstructions}</p>
       <br />
-      <button data-testid="finish-recipe-btn" type="button">Finish</button>
+      <Link to="/done-recipes">
+        <button
+          data-testid="finish-recipe-btn"
+          type="button"
+          disabled={ disabled }
+        >
+          Finish
+        </button>
+      </Link>
     </div>
   );
 }

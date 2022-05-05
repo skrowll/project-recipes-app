@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import clipboardCopy from 'clipboard-copy';
 import { containsIngredient, isFavorite,
@@ -15,6 +16,7 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
   const [checkedIngredients, setCheckedIngredients] = useState({});
   const [linkCopied, setLinkCopied] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   const getIngredients = () => {
     const ingredients = Object.keys(recipe)
@@ -26,12 +28,21 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
     return [];
   };
 
+  const handleFinish = () => {
+    const ingredient = document.querySelectorAll('input:checked').length
+    === getIngredients().length;
+    console.log(ingredient);
+    setDisabled(!ingredient);
+    console.log(disabled);
+  };
+
   useEffect(() => {
     request(recipeDetailsEndpoint + id).then((res) => {
       setRecipe(res.drinks[0]);
     });
     setFavorite(isFavorite(id, 'drink'));
     console.log(getIngredients());
+    handleFinish();
   }, [id]);
 
   const getMeasures = () => {
@@ -118,6 +129,7 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
                   value={ ingredient }
                   checked={ containsIngredient('cocktails', id, ingredient) }
                   onChange={ ingredientChange }
+                  onClick={ handleFinish }
                 />
                 &nbsp;
                 {`${ingredient} 
@@ -129,13 +141,15 @@ export default function DrinkRecipeInProgress({ match: { params: { id } } }) {
       <br />
       <p data-testid="instructions">{recipe.strInstructions}</p>
       <br />
-      <button
-        data-testid="finish-recipe-btn"
-        type="button"
-
-      >
-        Finish
-      </button>
+      <Link to="/done-recipes">
+        <button
+          data-testid="finish-recipe-btn"
+          type="button"
+          disabled={ disabled }
+        >
+          Finish
+        </button>
+      </Link>
     </div>
   );
 }
