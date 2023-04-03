@@ -7,6 +7,7 @@ export default function ExploreIngredient() {
     <div>
       <Header title="Explore Ingredients" />
       Ingredient
+      <p>Sorry! Page under development.</p>
       <Footer />
     </div>
   );
