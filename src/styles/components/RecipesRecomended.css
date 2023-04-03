@@ -1,15 +1,24 @@
 .recomended-content {
-  align-items: center;
   display: flex;
+  align-items: center;
   justify-content: space-evenly;
-  margin: 20px auto;
   width: 100%;
+  margin: .5rem auto;
 }
 
 .recomended-content button {
-  border: 1px solid black;
-  border-radius: 16px;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 6px;
+  border: none;
+  border-radius: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: .2rem 1rem;
+  background-color: #ffc4ab;
+}
+
+@media only screen and (max-width: 600px) {
+  .recomended-content button {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: .1rem .5rem;
+  }
 }
