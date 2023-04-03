@@ -1,0 +1,98 @@
+.recipeContainer {
+  padding: 0 2rem 0 2rem;
+}
+
+.imageContainer {
+  margin-left: -2rem;
+  width: calc(100vw - 2rem);
+  height: calc(100vw * 5 / 16 - 2rem);
+}
+
+.recipeContainer .recipeImage {
+  width: 100%;
+  aspect-ratio: 16/5;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0 0 2rem 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.recipeName {
+  font-size: 2rem;
+}
+
+.socialContainer button{
+  border: 0;
+  background-color: transparent;
+  margin: 1rem 1rem 1rem 0;
+}
+
+.socialContainer button img{
+  width: 1.5rem;
+}
+
+.recipeContainer p {
+  text-align: justify;
+}
+
+.recipeContainer iframe {
+  display: block;
+  width: 80%;
+  aspect-ratio: 16/9;
+  margin: 2rem auto;
+}
+
+.recommendedContainer {
+  display: flex;
+  align-items: center;
+  margin: 1rem auto 5rem auto;
+  overflow-x: scroll;
+  width: 80vw;
+  border-radius: 1rem;
+}
+
+.recommendedContainer > a {
+  position: relative;
+  min-width: calc(100% / 3);
+}
+
+.recommendedContainer > a img {
+  width: 100%;
+}
+
+.recommendedContainer > a .textContainer {
+  position: absolute;
+  background-color: #00000046;
+  top: 0;
+  width: 100%;
+  color: white;
+  font-weight: 700;
+  padding: 1rem;
+}
+
+.recommendedContainer:hover > a:not(:hover) {
+  opacity: 0.5;
+}
+
+.startRecipe {
+  border: none;
+  text-decoration: none;
+  color: white;
+  font-weight: 900;
+  padding: 1rem;
+  background-color: #1ac97a;
+  border-radius: 1rem;
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media only screen and (max-width: 600px) {
+  .recipeContainer iframe {
+    width: 100%;
+  }
+}

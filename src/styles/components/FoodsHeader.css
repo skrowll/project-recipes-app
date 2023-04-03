@@ -1,10 +1,59 @@
 header {
-  align-items: center;
-  background-color: #999;
   display: flex;
-  font-size: 12px;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-evenly;
-  padding: 20px;
+  background-color: #fc6111;
+  width: 100%;
+  border-radius: 0 0 1.5rem 1.5rem;
+  padding: .5rem 2rem .5rem 2rem;
+  color: white;
+  z-index: 2;
+}
+
+.headerContainer a > img {
+  width: 1.2rem;
+}
+
+.headerContainer button > img {
+  width: 1.5rem;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
+.headerContainer a,
+.headerContainer button  {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff30;
+  border-radius: 50%;
+  width: 2.2rem;
+  aspect-ratio: 1/1;
+  border: 0;
+  cursor: pointer;
+}
+
+.headerContainer a:hover,
+.headerContainer button:hover  {
+  transform: scale(1.1);
+}
+
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+}
+
+@media only screen and (max-width: 600px) {
+  header {
+    padding: .5rem 1rem .5rem 1rem;
+  }
+}

@@ -14,15 +14,20 @@ export default function Header({ title, showSearchIcon }) {
 
   return (
     <header>
-      <Link to="/profile">
-        <img data-testid="profile-top-btn" src={ profileIcon } alt="Perfil" />
-      </Link>
-      <h2 data-testid="page-title">{ title }</h2>
-      { showSearchIcon
-        ? (
-          <div>
+      <div className="headerContainer">
+        <Link to="/profile">
+          <img
+            data-testid="profile-top-btn"
+            src={ profileIcon }
+            alt="Perfil"
+          />
+        </Link>
+        <h2 data-testid="page-title">{ title }</h2>
+        { showSearchIcon
+          && (
             <button
               type="button"
+              className="searchButton"
               onClick={ handleClick }
             >
               <img
@@ -31,9 +36,14 @@ export default function Header({ title, showSearchIcon }) {
                 alt="Pesquisar"
               />
             </button>
+          )}
+      </div>
+      { showSearchIcon
+        && (
+          <div className="searchContainer">
             {renderSearchBar && <SearchBar />}
-          </div>)
-        : ''}
+          </div>
+        )}
     </header>
   );
 }

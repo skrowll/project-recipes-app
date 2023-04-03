@@ -1,0 +1,50 @@
+.recipeInProgressContainer {
+  padding: 0 2rem 0 2rem;
+}
+
+.recipeInProgressContainer .recipeImage {
+  width: 100%;
+  aspect-ratio: 16/5;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0 0 2rem 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.recipeName {
+  font-size: 2rem;
+}
+
+.recipeInProgressContainer ul {
+  list-style: none;
+}
+
+.recipeInProgressContainer p {
+  text-align: justify;
+}
+
+.finishButton {
+  text-decoration: none;
+  color: white;
+  font-weight: 900;
+  padding: 1rem 3rem;
+  background-color: #1ac97a;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  border: none;
+}
+
+.finishButton:disabled {
+  background-color: #1ac97a69;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  cursor: not-allowed;
+}
+
+.finishButton:enabled:hover {
+  transform: scale(1.1);
+}
