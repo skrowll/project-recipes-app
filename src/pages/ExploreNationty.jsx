@@ -6,7 +6,8 @@ export default function ExploreNationty() {
   return (
     <div>
       <Header title="Explore Nationalities" showSearchIcon />
-      Nationty
+      Nationality
+      <p>Sorry! Page under development.</p>
       <Footer />
     </div>
   );

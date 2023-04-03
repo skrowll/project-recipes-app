@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import '../styles/pages/Login.css';
+
 const PASSWORD_MAX_LENGTH = 6;
 
 export default function Login() {
@@ -34,7 +36,7 @@ export default function Login() {
   }, [state]);
 
   return (
-    <form onSubmit={ saveToken }>
+    <form className="loginForm" onSubmit={ saveToken }>
       <input
         data-testid="email-input"
         type="email"

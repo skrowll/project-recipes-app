@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
-import '../styles/pages/FoodRecipe.css';
+import '../styles/pages/Recipe.css';
 import { Link } from 'react-router-dom';
 import clipboardCopy from 'clipboard-copy';
 import { isFavorite, removeFavorite, request, saveFavorite } from '../services/services';
+import Header from '../components/Header';
+// import Footer from '../components/Footer';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeart from '../images/whiteHeartIcon.svg';
 import blackHeart from '../images/blackHeartIcon.svg';
@@ -77,35 +79,42 @@ export default function FoodRecipe({ match: { params: { id } } }) {
 
   return (
     <div>
-      <div>
-        <img
-          style={ { width: '400px' } } // remover se for estilzar com css
-          data-testid="recipe-photo"
-          src={ recipe.strMealThumb }
-          alt="s"
-        />
-        {linkCopied && <p>Link copied!</p>}
-        <h3 data-testid="recipe-title">{ recipe.strMeal }</h3>
-        <button
-          data-testid="share-btn"
-          type="button"
-          onClick={ copy }
-        >
-          <img src={ shareIcon } alt="Share" />
-
-        </button>
-        <button
-          type="button"
-          onClick={ handleFavoriteClick }
-        >
+      <Header title="Recipe" />
+      <div className="recipeContainer">
+        <div className="imageContainer">
           <img
-            data-testid="favorite-btn"
-            src={ favorite ? blackHeart : whiteHeart }
-            alt="whiteHeart"
+            // style={ { width: '400px' } } // remover se for estilzar com css
+            data-testid="recipe-photo"
+            className="recipeImage"
+            src={ recipe.strMealThumb }
+            alt="s"
           />
-        </button>
-        <p data-testid="recipe-category">{ recipe.strCategory }</p>
-        <ul>
+        </div>
+        <h3 className="recipeName" data-testid="recipe-title">{ recipe.strMeal }</h3>
+        <p data-testid="recipe-category">{ `Category: ${recipe.strCategory}` }</p>
+        <div className="socialContainer">
+          {linkCopied && <p>Link copied!</p>}
+          <button
+            data-testid="share-btn"
+            type="button"
+            onClick={ copy }
+          >
+            <img src={ shareIcon } alt="Share" />
+
+          </button>
+          <button
+            type="button"
+            onClick={ handleFavoriteClick }
+          >
+            <img
+              data-testid="favorite-btn"
+              src={ favorite ? blackHeart : whiteHeart }
+              alt="whiteHeart"
+            />
+          </button>
+        </div>
+        <ol>
+          Ingredients:
           {
             getIngredients().map((ingredient, index) => (
               <li
@@ -115,47 +124,45 @@ export default function FoodRecipe({ match: { params: { id } } }) {
                 {`${ingredient} - ${getMeasures()[index]}`}
               </li>))
           }
-        </ul>
+        </ol>
         <br />
         <p data-testid="instructions">{recipe.strInstructions}</p>
         <iframe
           data-testid="video"
           title="tutorial"
-          width="560"
-          height="315"
           src={ recipe.strYoutube?.replace('watch?v=', 'embed/') }
           frameBorder="0"
           allowFullScreen
         />
+        {/* <Footer /> */}
       </div>
-      <div>
-        <h2>Recommended</h2>
-        <div style={ { height: '300px', display: 'flex', overflowY: 'hidden' } }>
-          { recomendation.length > 0 && (
-            recomendation.map((drink, index) => (
-              <div
-                key={ drink.idDrink }
-                data-testid={ `${index}-recomendation-card` }
-              >
-                <img
-                  style={ { width: '200px' } } // remover se for estilzar com css
-                  src={ drink.strDrinkThumb }
-                  alt={ drink.strDrink }
-                />
+      <h2>Recommended drinks</h2>
+      <div className="recommendedContainer">
+        { recomendation.length > 0 && (
+          recomendation.map((drink, index) => (
+            <Link
+              to={ `/drinks/${drink.idDrink}` }
+              key={ drink.idDrink }
+              data-testid={ `${index}-recomendation-card` }
+            >
+              <img
+                // style={ { width: '200px' } } // remover se for estilzar com css
+                src={ drink.strDrinkThumb }
+                alt={ drink.strDrink }
+              />
+              <div className="textContainer">
                 <p>{ drink.strCategory }</p>
                 <h3 data-testid={ `${index}-recomendation-title` }>{ drink.strDrink }</h3>
               </div>
-            )))}
-        </div>
+            </Link>
+          )))}
       </div>
-      <Link to={ `/foods/${recipe.idMeal}/in-progress` }>
-        <button
-          type="button"
-          data-testid="start-recipe-btn"
-          className="start-recipe"
-        >
-          { startRecipe ? 'Start Recipe' : 'Continue Recipe' }
-        </button>
+      <Link
+        to={ `/foods/${recipe.idMeal}/in-progress` }
+        className="startRecipe"
+        data-testid="start-recipe-btn"
+      >
+        { startRecipe ? 'Start Recipe' : 'Continue Recipe' }
       </Link>
     </div>
   );

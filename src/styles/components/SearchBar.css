@@ -1,0 +1,53 @@
+.searchBarForm {
+  width: 40%;
+}
+
+.searchBarForm input[type='text']{
+  width: 100%;
+  height: 2rem;
+  border: 0;
+  border-radius: 1rem;
+  padding-left: 1rem;
+  outline: none;
+}
+
+.radioContainer {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.buttonContainer button {
+  width: 50%;
+  height: 2rem;
+  border-radius: 1rem;
+  border: 0;
+  background-color: #75c5a1;
+  color: #f8f8f8;
+  font-weight: 900;
+}
+
+.buttonContainer button:hover {
+  background-color: #1ac97a;
+}
+
+@media only screen and (max-width: 600px) {
+  .searchBarForm {
+    width: 80%;
+  }
+
+  .radioContainer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .buttonContainer button {
+    background-color: #1ac97a;
+  }
+}

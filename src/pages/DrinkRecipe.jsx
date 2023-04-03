@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
+import '../styles/pages/Recipe.css';
 import { Link } from 'react-router-dom';
 import clipboardCopy from 'clipboard-copy';
 import { isFavorite, isRecipeInProgress,
   removeFavorite, request, saveFavorite } from '../services/services';
+import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeart from '../images/whiteHeartIcon.svg';
 import blackHeart from '../images/blackHeartIcon.svg';
-
-import '../styles/pages/DrinkRecipe.css';
 
 export const recipeDetailsEndpoint = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 const recomendationDrinkRecipes = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
@@ -79,35 +79,42 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
 
   return (
     <div>
-      <div>
-        <img
-          style={ { width: '400px' } } // remover se for estilzar com css
-          data-testid="recipe-photo"
-          src={ recipe.strDrinkThumb }
-          alt="s"
-        />
-        {linkCopied && <p>Link copied!</p>}
-        <h3 data-testid="recipe-title">{ recipe.strDrink }</h3>
-        <button
-          data-testid="share-btn"
-          type="button"
-          onClick={ copy }
-        >
-          <img src={ shareIcon } alt="Share" />
-
-        </button>
-        <button
-          type="button"
-          onClick={ handleFavoriteClick }
-        >
+      <Header title="Recipe" />
+      <div className="recipeContainer">
+        <div className="imageContainer">
           <img
-            data-testid="favorite-btn"
-            src={ favorite ? blackHeart : whiteHeart }
-            alt="whiteHeart"
+            // style={ { width: '400px' } } // remover se for estilzar com css
+            data-testid="recipe-photo"
+            className="recipeImage"
+            src={ recipe.strDrinkThumb }
+            alt="s"
           />
-        </button>
+        </div>
+        <h3 data-testid="recipe-title">{ recipe.strDrink }</h3>
         <p data-testid="recipe-category">{ recipe.strAlcoholic }</p>
-        <ul>
+        <div className="socialContainer">
+          {linkCopied && <p>Link copied!</p>}
+          <button
+            data-testid="share-btn"
+            type="button"
+            onClick={ copy }
+          >
+            <img src={ shareIcon } alt="Share" />
+
+          </button>
+          <button
+            type="button"
+            onClick={ handleFavoriteClick }
+          >
+            <img
+              data-testid="favorite-btn"
+              src={ favorite ? blackHeart : whiteHeart }
+              alt="whiteHeart"
+            />
+          </button>
+        </div>
+        <ol>
+          Ingredients:
           {
             getIngredients().map((ingredient, index) => (
               <li
@@ -117,7 +124,7 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
                 {`${ingredient} - ${getMeasures()[index]}`}
               </li>))
           }
-        </ul>
+        </ol>
         <br />
         <p data-testid="instructions">{recipe.strInstructions}</p>
         {recipe.strVideo ? (<iframe
@@ -131,36 +138,39 @@ export default function DrinkRecipe({ match: { params: { id } } }) {
         />) : ''}
       </div>
       <div>
-        <h2>Recommended</h2>
-        <div style={ { height: '300px', display: 'flex', overflowY: 'hidden' } }>
+        <h2>Recommended foods</h2>
+        <div className="recommendedContainer">
           {
             recomendation.length > 0 && (
               recomendation.map((meal, index) => (
-                <div
+                <Link
+                  to={ `/foods/${meal.idMeal}` }
                   key={ meal.idMeal }
                   data-testid={ `${index}-recomendation-card` }
                 >
                   <img
-                    style={ { width: '200px' } } // remover se for estilzar com css
+                    // style={ { width: '200px' } } // remover se for estilzar com css
                     src={ meal.strMealThumb }
                     alt={ meal.strMeal }
                   />
-                  <p>{ meal.strCategory }</p>
-                  <h3 data-testid={ `${index}-recomendation-title` }>{ meal.strMeal }</h3>
-                </div>
+                  <div className="textContainer">
+                    <p>{ meal.strCategory }</p>
+                    <h3 data-testid={ `${index}-recomendation-title` }>
+                      { meal.strMeal }
+                    </h3>
+                  </div>
+                </Link>
               )))
           }
 
         </div>
       </div>
-      <Link to={ `/drinks/${recipe.idDrink}/in-progress` }>
-        <button
-          type="button"
-          data-testid="start-recipe-btn"
-          className="start-recipe"
-        >
-          { startRecipe ? 'Start Recipe' : 'Continue Recipe' }
-        </button>
+      <Link
+        to={ `/drinks/${recipe.idDrink}/in-progress` }
+        className="startRecipe"
+        data-testid="start-recipe-btn"
+      >
+        { startRecipe ? 'Start Recipe' : 'Continue Recipe' }
       </Link>
     </div>
   );
