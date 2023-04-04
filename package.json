@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "16"
+    "node": "^18"
   },
   "dependencies": {
     "@sheerun/mutationobserver-shim": "^0.3.3",
@@ -32,13 +32,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test-coverage": "react-scripts test --coverage --watchAll=false",
-    "eject": "react-scripts eject",
-    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js,.jsx",
-    "lint:styles": "npx stylelint '**/*.css'"
+    "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
+  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -55,16 +51,11 @@
     "clipboardy": "^2.1.0",
     "cypress": "^9.3.1",
     "cypress-multi-reporters": "^1.4.0",
-    "eslint": "7.11.0",
-    "eslint-config-trybe-frontend": "1.2.3",
-    "eslint-plugin-react-hooks": "^4.2.0",
     "fs-extra": "^9.0.1",
     "mocha": "^8.0.1",
     "mochawesome": "^6.1.1",
     "mochawesome-merge": "^4.1.0",
-    "mochawesome-report-generator": "^5.1.0",
-    "stylelint": "^13.8.0",
-    "stylelint-order": "^4.1.0"
+    "mochawesome-report-generator": "^5.1.0"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
