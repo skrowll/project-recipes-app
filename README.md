@@ -71,11 +71,11 @@ Além disto é bom ter um editor para trabalhar com o código como [VSCode](http
 ## `Instalação`
 Clone esse repositório:
 ```
-git clone https://github.com/skrowll/trybe-project-recipes-app.git
+git clone https://github.com/skrowll/project-recipes-app.git
 ```
 Entre na pasta do repositório que você acabou de clonar:
  ```
-cd trybe-project-recipes-app
+cd project-recipes-app
   ```
 Instale as dependências:
  ```
