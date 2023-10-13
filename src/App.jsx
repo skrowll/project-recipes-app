@@ -1,27 +1,28 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
-import Login from './pages/Login';
-import Foods from './pages/Foods';
-import Profile from './pages/Profile';
-import Drinks from './pages/Drinks';
 import Done from './pages/Done';
-import Favorite from './pages/Favorite';
+import DrinkRecipe from './pages/DrinkRecipe';
+import DrinkRecipeInProgress from './pages/DrinkRecipeInProgress';
+import Drinks from './pages/Drinks';
 import Explore from './pages/Explore';
-import ExploreFoods from './pages/ExploreFoods';
 import ExploreDrinks from './pages/ExploreDrinks';
+import ExploreFoods from './pages/ExploreFoods';
 import ExploreIngredient from './pages/ExploreIngredient';
 import ExploreNationty from './pages/ExploreNationty';
-import DrinkRecipe from './pages/DrinkRecipe';
+import Favorite from './pages/Favorite';
 import FoodRecipe from './pages/FoodRecipe';
 import FoodRecipeInProgress from './pages/FoodRecipeInProgress';
-import DrinkRecipeInProgress from './pages/DrinkRecipeInProgress';
+import Foods from './pages/Foods';
+import Profile from './pages/Profile';
 
 function App() {
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={ Login } />
+        <Route exact path="/">
+          <Redirect to="/foods" />
+        </Route>
         <Route exact path="/foods" component={ Foods } />
         <Route exact path="/profile" component={ Profile } />
         <Route exact path="/drinks" component={ Drinks } />
